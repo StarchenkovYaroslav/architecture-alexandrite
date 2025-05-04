@@ -1,0 +1,24 @@
+@startuml
+participant Client
+participant MES
+participant Cache
+participant MESdb
+
+== request ==
+
+Client -> MES : data request
+
+alt#Gold #LightBlue miss
+    MES -> MESdb: data request
+    MESdb -> MES: data response
+    MES -> Cache: cache store
+end
+
+MES -> Client  : data response
+
+== invalidation ==
+
+MES -> MESdb: data write
+MES -> Cache: cache invalidate
+
+@enduml
